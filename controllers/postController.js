@@ -55,20 +55,23 @@ exports.createPost = async (req, res, next) => {
 
 exports.updatePost = async (req, res, next) => {
     try {
-        const post = await Post.findByIdAndUpdate();
-        res.status(200).json({
-            status: 'success',
-            data: {
-                post,
-            },
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            message: err,
-        });
-    };
-}
+      const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.status(200).json({
+        status: 'success',
+        data: {
+          post,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
+  };
 
 exports.deletePost = async (req, res, next) => {
     try {
