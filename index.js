@@ -5,6 +5,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
 const postRouter = require('./routes/postRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const connectWithRetry = () => {
   mongoose
@@ -24,6 +25,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/posts', postRouter);
-
+app.use('/api/v1/users', userRouter);
 
 app.listen(port, () => console.log('listening on port ' + port));
