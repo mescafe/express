@@ -47,7 +47,7 @@ app.use(
     cookie: {
       secure: false, // recommended: only set cookies over https. In production you should use secure:true
       httpOnly: true, // recommended: don't let JS code access cookies. Browser extensions run JS code on your browser!
-      maxAge: 30000 // recommended: set this to 30 seconds or less  
+      maxAge: 1000 * 60 * 60, // 1 hour
     }
   })
 )
