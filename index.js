@@ -35,6 +35,7 @@ const connectWithRetry = () => {
 
 connectWithRetry();
 
+app.enable('trust proxy'); // trust first proxy
 app.use(express.json());
 
 // Initialize sesssion storage.
