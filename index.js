@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const redis = require('redis');
 const RedisStore = require("connect-redis").default;
 const session = require('express-session');
@@ -36,6 +37,7 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 app.enable('trust proxy'); // trust first proxy
+app.use(cors({}));
 app.use(express.json());
 
 // Initialize sesssion storage.
