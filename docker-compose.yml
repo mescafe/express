@@ -1,9 +1,13 @@
 version: "3"
 services:
+  nginx:
+    image: nginx:stable-alpine
+    depends_on:
+      - nodeapp
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
   nodeapp:
     build: .
-    ports:
-      - "3000:3000"
     environment:
       - PORT=3000
     depends_on:

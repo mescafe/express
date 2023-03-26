@@ -1,9 +1,12 @@
 version: "3"
 services:
+  nginx:
+    ports:
+      - "80:80"
   nodeapp:
     build:
       context: .
-      args: 
+      args:
         - NODE_ENV=production
     environment:
       - NODE_ENV=production
