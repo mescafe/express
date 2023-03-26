@@ -1,11 +1,28 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { MONGO_USER, MONGO_PASSWORD, MONGO_IP, MONGO_PORT } = require('./config/config');
+const redis = require('redis');
+const RedisStore = require("connect-redis").default;
+const session = require('express-session');
+const { MONGO_USER, MONGO_PASSWORD, MONGO_IP, MONGO_PORT, REDIS_URL, REDIS_PORT, SESSION_SECRET } = require('./config/config');
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
 const postRouter = require('./routes/postRoutes');
 const userRouter = require('./routes/userRoutes');
+
+// Initialize client.
+let redisClient = redis.createClient({
+  socket: {
+    host: REDIS_URL,
+    port: REDIS_PORT
+  },
+})
+redisClient.connect().catch(console.error)
+
+// Initialize store.
+let redisStore = new RedisStore({
+  client: redisClient
+})
 
 const connectWithRetry = () => {
   mongoose
@@ -19,6 +36,22 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 app.use(express.json());
+
+// Initialize sesssion storage.
+app.use(
+  session({
+    store: redisStore,
+    resave: false, // required: force lightweight session keep alive (touch)
+    saveUninitialized: false, // recommended: only save session when data exists
+    secret: SESSION_SECRET,
+    cookie: {
+      secure: false, // recommended: only set cookies over https. In production you should use secure:true
+      httpOnly: true, // recommended: don't let JS code access cookies. Browser extensions run JS code on your browser!
+      maxAge: 30000 // recommended: set this to 30 seconds or less  
+    }
+  })
+)
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

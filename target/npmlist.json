@@ -1,1 +1,1 @@
-{"version":"1.0.0","name":"express","dependencies":{"express":{"version":"4.18.2"}}}
+{"version":"1.0.0","name":"express","dependencies":{"bcryptjs":{"version":"2.4.3"},"connect-redis":{"version":"7.0.1"},"express-session":{"version":"1.17.3"},"express":{"version":"4.18.2"},"mongoose":{"version":"7.0.3"},"redis":{"version":"4.6.5"}}}
