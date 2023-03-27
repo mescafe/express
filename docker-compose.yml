@@ -6,8 +6,9 @@ services:
       - nodeapp
     volumes:
       - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
-  nodeapp:
+  nodeapp: 
     build: .
+    image: mascarenesc/express-app:latest
     environment:
       - PORT=3000
     depends_on:
